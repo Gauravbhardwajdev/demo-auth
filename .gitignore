@@ -1,0 +1,12 @@
+# Secrets
+config/db.php
+*.env
+node_modules/
+.DS_Store
+
+# XAMPP
+xampp/
+htdocs/
+
+# Logs
+*.log
