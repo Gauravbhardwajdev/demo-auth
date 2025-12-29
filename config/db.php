@@ -1,8 +1,8 @@
 <?php
 $host = "localhost";
-$db   = "demo_auth";   // database name
-$user = "root";        // XAMPP default user
-$pass = "";            // XAMPP default password is empty
+$db   = "demo_auth";   
+$user = "root";        
+$pass = "";            
 
 $conn = new mysqli($host, $user, $pass, $db);
 

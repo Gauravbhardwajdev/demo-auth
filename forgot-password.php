@@ -2,10 +2,12 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>Nebula Login</title>
+  <title>Nebula Portal – Forgot Password</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link rel="stylesheet" href="DemoLogin.css" />
+  <!-- IMPORTANT: reuse the login CSS file -->
+  <link rel="stylesheet" href="css/login.css" />
 </head>
+
 <body>
   <div class="stars"></div>
   <div class="nebula"></div>
@@ -13,48 +15,33 @@
   <main class="scene">
     <section class="card">
       <header class="card-header">
-        <h1>Test Demo Website</h1>
-        <p>Sign in to enter the system</p>
+        <h1>Test Forgot password</h1>
+        <p>Enter your email to receive a reset link</p>
       </header>
 
-<form class="card-form" method="POST" action="login.php">
-  <div class="field">
-    <label for="email">Email</label>
-    <div class="field-inner">
-      <span class="field-orbit"></span>
-      <input
-        id="email"
-        name="email"
-        type="email"
-        placeholder="you@example.com"
-        required
-      />
-    </div>
-  </div>
+      <form class="card-form">
+        <div class="field">
+          <label for="email">Email</label>
+          <div class="field-inner">
+            <span class="field-orbit"></span>
+            <input
+              id="email"
+              type="email"
+              placeholder="you@example.com"
+              required
+            />
+          </div>
+        </div>
 
-  <div class="field">
-    <label for="password">Password</label>
-    <div class="field-inner">
-      <span class="field-orbit"></span>
-      <input
-        id="password"
-        name="password"
-        type="password"
-        placeholder="Enter your password"
-        required
-      />
-    </div>
-  </div>
-
-  <button type="submit" class="btn-glow">
-    <span class="btn-glow-orbit"></span>
-    <span class="btn-glow-text">Launch</span>
-  </button>
-</form>
+        <button type="submit" class="btn-glow">
+          <span class="btn-glow-orbit"></span>
+          <span class="btn-glow-text">Send reset link</span>
+        </button>
+      </form>
 
       <footer class="card-footer">
-        <a href="DemoForgot.html">Forgot password?</a>
-        <a href="DemoSignup.html">Create account</a>
+        <a href="login.php">Back to login</a>
+        <a href="register.php">Create account</a>
       </footer>
     </section>
   </main>
