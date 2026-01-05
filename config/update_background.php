@@ -1,5 +1,6 @@
 <?php
 session_start();
+require __DIR__ . '/db.php';   // uses DB_HOST from docker-compose (db)
 if (!isset($_SESSION['user_id'])) {
   header("Location: index.php");
   exit;
@@ -8,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = (int)$_SESSION['user_id'];
 $user_email = $_SESSION['email'] ?? '';
 
-$conn = new mysqli("localhost", "root", "", "demo_auth");
+// $conn = new mysqli("localhost", "root", "", "demo_auth");
 if ($conn->connect_error) {
   die("DB connection failed: " . $conn->connect_error);
 }

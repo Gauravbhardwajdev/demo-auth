@@ -1,5 +1,6 @@
 <?php
 session_start();
+require 'config/db.php';   // uses DB_HOST=db from docker-compose
 if (!isset($_SESSION['user_id'])) {
   header("Location: index.php");
   exit;
@@ -8,7 +9,7 @@ if (!isset($_SESSION['user_id'])) {
 $user_id = (int)$_SESSION['user_id'];
 $user_email = $_SESSION['email'] ?? 'User';
 
-$conn = new mysqli("localhost", "root", "", "demo_auth");
+// $conn = new mysqli("localhost", "root", "", "demo_auth");
 if ($conn->connect_error) {
   die("DB connection failed: " . $conn->connect_error);
 }
@@ -275,7 +276,7 @@ $bg_has_any =
               <div class="card-text">Fill only what you want to show on your profile.</div>
 
               <!-- IMPORTANT: absolute action -->
-              <form class="form" method="post" action="/demo-auth/config/update_background.php">
+              <form class="form" method="post" action="config/update_background.php">
                 <div class="row">
                   <div>
                     <label>Headline</label>

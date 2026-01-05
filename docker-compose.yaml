@@ -1,0 +1,38 @@
+
+
+services:
+  db:
+    image: mysql:8.0
+    container_name: showcasefolio-db
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpass123
+      MYSQL_DATABASE: demo_auth
+    volumes:
+      - mysql_data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-prootpass123"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+
+  web:
+    # IMPORTANT: use local build + mount so your db.php changes reflect immediately
+    build: .
+    container_name: showcasefolio-web
+    restart: always
+    ports:
+      - "8085:80"
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+      DB_USER: root
+      DB_PASS: rootpass123
+      DB_NAME: demo_auth
+    volumes:
+      - ./:/var/www/html
+
+volumes:
+  mysql_data:
