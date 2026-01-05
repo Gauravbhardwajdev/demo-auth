@@ -1,4 +1,4 @@
-✨ Demo Website
+✨ Testing Website
 
 Authentication	UI/UX	Security
 ✅ Full Login/Register	✨ Nebula animations	🔒 Prepared Statements
