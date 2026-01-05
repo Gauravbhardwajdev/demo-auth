@@ -13,7 +13,7 @@
   <main class="scene">
     <section class="card">
       <header class="card-header">
-        <h1>Test Demo Website</h1>
+        <h1>ShowCaseFolio</h1>
         <p>Sign in to enter the system</p>
       </header>
 
