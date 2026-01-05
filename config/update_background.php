@@ -51,5 +51,6 @@ $stmt->bind_param(
 $stmt->execute();
 
 /* PRG redirect: dashboard will fetch fresh data after redirect */
-header("Location: /demo-auth/dashboard.php#section-background");
+header("Location: /dashboard.php#section-background");
 exit;
+
