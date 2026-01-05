@@ -86,7 +86,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <button type="submit" class="btn-glow">
           <span class="btn-glow-orbit"></span>
-          <span class="btn-glow-text">Launch</span>
+          <span class="btn-glow-text">Login Now</span>
         </button>
       </form>
 
