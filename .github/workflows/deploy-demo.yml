@@ -1,0 +1,73 @@
+name: Deploy to Demo Server
+
+# TRIGGER: This tells GitHub "Run this script ONLY when..."
+on:
+  push:
+    branches: [ "main" ] # ...code is pushed to the 'main' branch.
+
+# VARIABLES: Settings we use throughout the script
+env:
+  AWS_REGION: ap-south-1       # Your AWS region (Mumbai)
+  ECR_REPOSITORY: demo-auth    # The name of the repo you created in AWS ECR
+  CONTAINER_NAME: showcasefolio-web # The service name in your docker-compose file
+
+# JOBS: The actual work to be done
+jobs:
+  deploy:
+    runs-on: ubuntu-latest  # GitHub provides a temporary Linux server to run this script
+
+    steps:
+    # Step 1: Download your code
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Step 2: Log in to AWS so we can push images
+    - name: Configure AWS credentials
+      uses: aws-actions/configure-aws-credentials@v1
+      with:
+        aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}         # Uses the secrets you just saved
+        aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }} # Uses the secrets you just saved
+        aws-region: ${{ env.AWS_REGION }}
+
+    # Step 3: Connect Docker to your private AWS Registry (ECR)
+    - name: Login to Amazon ECR
+      id: login-ecr
+      uses: aws-actions/amazon-ecr-login@v1
+
+    # Step 4: Build the Docker image and send it to AWS
+    - name: Build, tag, and push image to Amazon ECR
+      env:
+        ECR_REGISTRY: ${{ steps.login-ecr.outputs.registry }}
+        IMAGE_TAG: ${{ github.sha }}  # Uses the unique Commit ID as a version tag
+      run: |
+        # Build the image using your Dockerfile
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG .
+        
+        # Also tag it as 'latest' so it's easy to find
+        docker build -t $ECR_REGISTRY/$ECR_REPOSITORY:latest .
+        
+        # Upload (push) the images to AWS ECR
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:$IMAGE_TAG
+        docker push $ECR_REGISTRY/$ECR_REPOSITORY:latest
+
+    # Step 5: Connect to your EC2 and update the website
+    - name: Deploy to EC2
+      uses: appleboy/ssh-action@v0.1.6  # A tool to run SSH commands remotely
+      with:
+        host: ${{ secrets.EC2_HOST }}     # Your EC2 IP
+        username: ec2-user                # Your EC2 username
+        key: ${{ secrets.EC2_SSH_KEY }}   # Your private key (pem file)
+        script: |
+          # 1. Log the EC2 server into ECR (so it can download the private image)
+          aws ecr get-login-password --region ${{ env.AWS_REGION }} | docker login --username AWS --password-stdin ${{ steps.login-ecr.outputs.registry }}
+          
+          # 2. Go to your project folder
+          cd ~/demo-auth
+          
+          # 3. Update the .env file with the SPECIFIC version we just built
+          # This forces Docker to use the new code, not the old cached one.
+          echo "APP_IMAGE=${{ steps.login-ecr.outputs.registry }}/${{ env.ECR_REPOSITORY }}:${{ github.sha }}" > .env
+          
+          # 4. Download the new image and restart the web container
+          docker compose pull web
+          docker compose up -d web
