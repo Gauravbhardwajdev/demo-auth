@@ -94,6 +94,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <a href="register.php">Create account</a>
         <a href="forgot-password.php">Forgot Password</a>
       </footer>
+      © 2026 ShowCaseFolio
     </section>
   </main>
 

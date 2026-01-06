@@ -151,6 +151,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
       <footer class="card-footer">
         <a href="index.php">Back to login</a>
       </footer>
+      © 2026 ShowCaseFolio
     </section>
   </main>
 

@@ -354,7 +354,7 @@ $bg_has_any =
     </main>
 
     <footer>
-      © <?= date('Y') ?> Nebula Portal
+      © <?= date('Y') ?> © 2026 ShowCaseFolio
     </footer>
   </div>
 
